@@ -5,5 +5,5 @@ https://proggreg.github.io/ML5JS_Image_Classifier_KNN/
 
 Code based from Daniel Shiffmans Live Stream 
 
-Live Stream: https://www.youtube.com/watch?v=yEYgXP04GpI /n
+Live Stream: https://www.youtube.com/watch?v=yEYgXP04GpI <br>
 Code Examples: https://github.com/shiffman/Le-Tank-Workshop
