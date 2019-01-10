@@ -1,7 +1,19 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: lightblue;
+  font-family: Tahoma;
 }
 canvas {
   display: block;
+}
+
+#container {
+ padding: 40px;
+  margin: 32px;
+  float: center;
+}
+
+* {
+
 }

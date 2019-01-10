@@ -5,22 +5,16 @@ let knn;
 let trainButton;
 let classifyButton;
 
-let label;
+let textInput;
 
 let output;
 let trainingMessage;
 let message;
 
-let start = false;
-
 let videoWidth = 320;
 let videoHeight = 240;
 let canvas;
 
-function knnLoaded() {
-  let features = featureExtractor.infer(video);
-  knn.classify(features, gotResult);
-}
 
 function modelReady() {
  console.log('model ready');
@@ -29,9 +23,11 @@ function modelReady() {
 function setup() {
   canvas = createCanvas(videoWidth * 2, videoHeight);
   background(0);
-  let canvasPosX = windowWidth / 2 - videoWidth / 2;
+  let canvasPosX = windowWidth / 2 - videoWidth;
   let canvasPosY = windowHeight / 2 - videoHeight / 2;
-  canvas.position(0,canvasPosY);
+  canvas.position(canvasPosX,canvasPosY);
+  canvas.parent('container');
+  canvas.attribute('float','center');
 
   video = createCapture(VIDEO);
   featureExtractor = ml5.featureExtractor('MobileNet', modelReady);
@@ -39,28 +35,34 @@ function setup() {
   video.size(videoWidth, videoHeight);
   video.hide();
 
-  label = createInput();
-  label.attribute('size',50);
-  label.position(0,canvasPosY - 60)
+  textInput = createInput();
+  textInput.attribute('size',50);
+  textInput.position(canvasPosX,canvasPosY - 60)
 
   // buttons
+  textSize(28);
   trainButton = createButton('Train Image');
   trainButton.size(videoWidth,40);
+  trainButton.style('font-size', '16px');
+  trainButton.position(canvasPosX,canvasPosY + videoHeight);
+  trainButton.mousePressed(trainImg);
+
   classifyButton = createButton('Classify');
   classifyButton.size(videoWidth,40);
-  trainButton.position(0,canvasPosY + videoHeight);
-  classifyButton.position(width/2,canvasPosY + videoHeight)
-  trainButton.mousePressed(trainImg);
+  classifyButton.style('font-size', '16px');
+  classifyButton.position(canvasPosX + videoWidth ,canvasPosY + videoHeight)
   classifyButton.mousePressed(startClassify);
 
   //messages
   output = createP('There is a ');
   output.style('font-size', '32px');
-  output.position(canvasPosX,canvasPosY - 80);
+  output.position(canvasPosX + videoWidth,canvasPosY - 80);
+
   trainingMessage = createP('No Images have been trained yet');
-  trainingMessage.position(40 , canvasPosY - 40);
-  message = createP('Type in what you would like to classify and train using the the button below');
-  message.position(0,canvasPosY - 100);
+  trainingMessage.position(canvasPosX, canvasPosY - 40);
+
+  message = createP('What are you training?');
+  message.position(canvasPosX,canvasPosY - 100);
 
 }
 
@@ -70,6 +72,10 @@ function startClassify() {
 }
 
 function gotResult(err, results) {
+
+  if (err) {
+    console.log(err);
+  }
   output.html('There is a '+ results.label);
   let features = featureExtractor.infer(video);
   knn.classify(features, gotResult);
@@ -77,19 +83,10 @@ function gotResult(err, results) {
 
 function trainImg() {
   let features = featureExtractor.infer(video);
-  knn.addExample(features, label.value());
-  trainingMessage.html('Training ' + label.value() + ' Images')
+  knn.addExample(features, textInput.value());
+  trainingMessage.html('Training ' + textInput.value() + ' Images')
   copy(width / 2,0,videoWidth,videoHeight,0,0,videoWidth,videoHeight);
 }
-
-// function trainImg2() {
-//   let features = featureExtractor.infer(video);
-//   knn.addExample(features, 'Image2');
-//   messageImageTwo.html('Training Image Two example added')
-//   copy(width / 2 - videoWidth / 2,0,videoWidth,videoHeight,width - videoWidth,0,videoWidth,videoHeight);
-// }
-
-
 
 function draw() {
   image(video, width / 2, 0);
