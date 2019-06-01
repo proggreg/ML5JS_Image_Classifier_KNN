@@ -24,7 +24,7 @@ function setup() {
   canvas = createCanvas(videoWidth * 2, videoHeight);
   background(0);
   let canvasPosX = windowWidth / 2 - videoWidth;
-  let canvasPosY = windowHeight / 2 - videoHeight / 2;
+  let canvasPosY = windowHeight / 2 - videoHeight / 2 + 100;
   canvas.position(canvasPosX,canvasPosY);
   canvas.parent('container');
   canvas.attribute('float','center');
@@ -35,8 +35,9 @@ function setup() {
   video.size(videoWidth, videoHeight);
   video.hide();
 
-  textInput = createInput();
-  textInput.attribute('size',50);
+  textInput = createInput("Add Label");
+  textInput.attribute('size',40);
+  textInput.attribute('height', 60);
   textInput.position(canvasPosX,canvasPosY - 60)
 
   // buttons
